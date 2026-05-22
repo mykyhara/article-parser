@@ -74,15 +74,7 @@ export default function HomePage() {
     : null
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        fontFamily: 'Inter, sans-serif',
-        background: '#f1f5f9',
-      }}
-    >
+    <div className="flex flex-col h-screen bg-slate-100">
       <Header
         parsedAt={parsedAt}
         onOpenParse={() => setParseModalOpen(true)}
@@ -93,7 +85,7 @@ export default function HomePage() {
         hasArticle={!!article}
       />
 
-      <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
+      <div className="flex flex-1 min-h-0">
         <LeftPanel
           article={article}
           qualityResult={qualityResult}

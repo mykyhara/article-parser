@@ -35,23 +35,10 @@ export function UploadBar({
     !isLoading && !hasError && result && result.status !== 'PASS'
 
   return (
-    <div
-      style={{
-        background: '#ffffff',
-        borderTop: '1px solid #e2e8f0',
-        padding: '13px 18px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        boxShadow: '0 -4px 16px rgba(0,0,0,0.05)',
-        position: 'sticky',
-        bottom: 0,
-        zIndex: 10,
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+    <div className="bg-white border-t border-slate-200 p-[13px_18px] flex items-center justify-between shadow-[0_-4px_16px_rgba(0,0,0,0.05)] sticky bottom-0 z-10">
+      <div className="flex items-center gap-[7px]">
         {showWarnIcon && (
-          <span style={{ color: '#f59e0b', display: 'flex' }}>
+          <span className="text-amber-500 flex">
             <svg
               width="13"
               height="13"
@@ -69,7 +56,7 @@ export function UploadBar({
           </span>
         )}
         {result?.status === 'PASS' && (
-          <span style={{ color: '#22c55e', display: 'flex' }}>
+          <span className="text-green-500 flex">
             <svg
               width="13"
               height="13"
@@ -84,7 +71,7 @@ export function UploadBar({
             </svg>
           </span>
         )}
-        <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
+        <span className="text-[13px] font-semibold text-slate-900">
           {result
             ? result.status === 'PASS'
               ? 'All checks passed'
@@ -92,32 +79,17 @@ export function UploadBar({
             : summaryText}
         </span>
         {result && result.status !== 'PASS' && (
-          <span style={{ fontSize: 13, color: '#475569' }}>
+          <span className="text-[13px] text-slate-600">
             — review before uploading
           </span>
         )}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div className="flex items-center gap-[8px]">
         <button
           onClick={onOverride}
           disabled={!result}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '8px 16px',
-            borderRadius: 8,
-            background: 'transparent',
-            color: '#f59e0b',
-            border: '1.5px solid #f59e0b',
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: result ? 'pointer' : 'not-allowed',
-            fontFamily: 'Inter, sans-serif',
-            opacity: result ? 1 : 0.45,
-            transition: 'background 0.15s',
-          }}
+          className={`inline-flex items-center gap-[6px] px-[16px] py-[8px] rounded-[8px] bg-transparent text-amber-500 border-[1.5px] border-amber-500 text-[13px] font-semibold transition-[background] duration-150 ${result ? 'cursor-pointer' : 'cursor-not-allowed opacity-45'}`}
         >
           Override &amp; Upload
         </button>
@@ -125,21 +97,7 @@ export function UploadBar({
         <button
           onClick={canUpload && result ? onUpload : undefined}
           disabled={!canUpload || !result}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '8px 16px',
-            borderRadius: 8,
-            background: canUpload && result ? '#22c55e' : '#e2e8f0',
-            color: canUpload && result ? '#ffffff' : '#94a3b8',
-            border: 'none',
-            fontSize: 13,
-            fontWeight: 600,
-            cursor: canUpload && result ? 'pointer' : 'not-allowed',
-            fontFamily: 'Inter, sans-serif',
-            transition: 'background 0.15s',
-          }}
+          className={`inline-flex items-center gap-[6px] px-[16px] py-[8px] rounded-[8px] border-none text-[13px] font-semibold transition-[background] duration-150 ${canUpload && result ? 'bg-green-500 text-white cursor-pointer' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
         >
           <svg
             width="13"

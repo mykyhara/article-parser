@@ -24,29 +24,8 @@ type RightPanelProps = {
 
 function EmptyState({ onOpenParse }: { onOpenParse: () => void }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        gap: 16,
-        padding: '0 20px',
-      }}
-    >
-      <div
-        style={{
-          width: 56,
-          height: 56,
-          borderRadius: 14,
-          background: '#f1f5f9',
-          border: '1.5px dashed #cbd5e1',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+    <div className="flex flex-col items-center justify-center h-full gap-[16px] px-[20px]">
+      <div className="w-[56px] h-[56px] rounded-[14px] bg-slate-100 border-[1.5px] border-dashed border-slate-300 flex items-center justify-center">
         <svg
           width="22"
           height="22"
@@ -65,20 +44,11 @@ function EmptyState({ onOpenParse }: { onOpenParse: () => void }) {
         </svg>
       </div>
 
-      <div style={{ textAlign: 'center' }}>
-        <p
-          style={{
-            fontSize: 15,
-            fontWeight: 600,
-            color: '#0f172a',
-            margin: '0 0 6px',
-          }}
-        >
+      <div className="text-center">
+        <p className="text-[15px] font-semibold text-slate-900 m-0 mb-[6px]">
           No document loaded
         </p>
-        <p
-          style={{ fontSize: 13, color: '#94a3b8', margin: 0, lineHeight: 1.5 }}
-        >
+        <p className="text-[13px] text-slate-400 m-0 leading-[1.5]">
           Paste a Google Docs URL to analyse SEO quality
           <br />
           and preview the article content.
@@ -87,21 +57,7 @@ function EmptyState({ onOpenParse }: { onOpenParse: () => void }) {
 
       <button
         onClick={onOpenParse}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 7,
-          padding: '10px 20px',
-          borderRadius: 9,
-          background: '#0f172a',
-          color: '#ffffff',
-          border: 'none',
-          fontSize: 13,
-          fontWeight: 600,
-          cursor: 'pointer',
-          fontFamily: 'Inter, sans-serif',
-          boxShadow: '0 2px 8px rgba(15,23,42,0.18)',
-        }}
+        className="flex items-center gap-[7px] px-[20px] py-[10px] rounded-[9px] bg-slate-900 text-white border-none text-[13px] font-semibold cursor-pointer shadow-[0_2px_8px_rgba(15,23,42,0.18)]"
       >
         <svg
           width="14"
@@ -124,15 +80,9 @@ function EmptyState({ onOpenParse }: { onOpenParse: () => void }) {
 
 function LoadingSkeleton() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <div
-        className="animate-pulse"
-        style={{ height: 160, borderRadius: 12, background: '#e2e8f0' }}
-      />
-      <div
-        className="animate-pulse"
-        style={{ height: 520, borderRadius: 12, background: '#e2e8f0' }}
-      />
+    <div className="flex flex-col gap-[10px]">
+      <div className="animate-pulse h-[160px] rounded-[12px] bg-slate-200" />
+      <div className="animate-pulse h-[520px] rounded-[12px] bg-slate-200" />
     </div>
   )
 }
@@ -151,16 +101,8 @@ export function RightPanel({
   onOpenParse,
 }: RightPanelProps) {
   return (
-    <section
-      style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: 0,
-        overflowY: 'auto',
-      }}
-    >
-      <div style={{ flex: 1, padding: '18px 20px 0', overflowY: 'auto' }}>
+    <section className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      <div className="flex-1 p-[18px_20px_0] overflow-y-auto">
         {isLoading ? (
           <LoadingSkeleton />
         ) : article ? (

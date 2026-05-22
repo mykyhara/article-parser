@@ -108,60 +108,20 @@ export function LeftPanel({
   onOpenParse,
 }: LeftPanelProps) {
   return (
-    <aside
-      style={{
-        width: '36%',
-        minWidth: 300,
-        maxWidth: 420,
-        overflowY: 'auto',
-        padding: '18px 14px 18px 20px',
-        borderRight: '1px solid #e2e8f0',
-        background: '#f8fafc',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <aside className="w-[36%] min-w-[300px] max-w-[420px] overflow-y-auto py-[18px] pr-[14px] pl-[20px] border-r border-slate-200 bg-slate-50 flex flex-col">
       {(isLoading || qualityResult) && (
         <QualityScoreCard result={qualityResult} />
       )}
 
       {error && (
-        <div
-          style={{
-            padding: '14px 16px',
-            background: '#fef2f2',
-            border: '1px solid #fecaca',
-            borderRadius: 10,
-            fontSize: 13,
-            color: '#991b1b',
-            marginBottom: 10,
-          }}
-        >
-          <p style={{ fontWeight: 600, marginBottom: 4 }}>
-            Failed to parse document
-          </p>
-          <p
-            style={{
-              color: '#7f1d1d',
-              fontSize: 12,
-              lineHeight: 1.5,
-              marginBottom: 8,
-            }}
-          >
+        <div className="p-[14px_16px] bg-red-50 border border-red-200 rounded-[10px] text-[13px] text-red-800 mb-[10px]">
+          <p className="font-semibold mb-[4px]">Failed to parse document</p>
+          <p className="text-red-900 text-[12px] leading-[1.5] mb-[8px]">
             {error.message}
           </p>
           <button
             onClick={onOpenParse}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: 12,
-              color: '#dc2626',
-              textDecoration: 'underline',
-              fontFamily: 'Inter, sans-serif',
-              padding: 0,
-            }}
+            className="bg-transparent border-none cursor-pointer text-[12px] text-red-600 underline p-0 font-sans"
           >
             Try again
           </button>
@@ -169,41 +129,19 @@ export function LeftPanel({
       )}
 
       {isLoading && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className="flex flex-col gap-[8px]">
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="animate-pulse"
-              style={{ height: 44, borderRadius: 10, background: '#e2e8f0' }}
+              className="animate-pulse h-[44px] rounded-[10px] bg-slate-200"
             />
           ))}
         </div>
       )}
 
       {!article && !isLoading && !error && (
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 20,
-            padding: '24px 8px',
-          }}
-        >
-          <div
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: 14,
-              background: '#f1f5f9',
-              border: '1.5px dashed #cbd5e1',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+        <div className="flex-1 flex flex-col items-center justify-center gap-[20px] py-[24px] px-[8px]">
+          <div className="w-[52px] h-[52px] rounded-[14px] bg-slate-100 border-[1.5px] border-dashed border-slate-300 flex items-center justify-center">
             <svg
               width="22"
               height="22"
@@ -219,69 +157,31 @@ export function LeftPanel({
             </svg>
           </div>
 
-          <div style={{ textAlign: 'center' }}>
-            <p
-              style={{
-                fontSize: 14,
-                fontWeight: 600,
-                color: '#475569',
-                margin: '0 0 6px',
-              }}
-            >
+          <div className="text-center">
+            <p className="text-[14px] font-semibold text-slate-600 mb-[6px]">
               Quality checks
             </p>
-            <p
-              style={{
-                fontSize: 12,
-                color: '#94a3b8',
-                margin: 0,
-                lineHeight: 1.6,
-              }}
-            >
+            <p className="text-[12px] text-slate-400 m-0 leading-[1.6]">
               Parse a Google Doc to run
               <br />
               the following checks:
             </p>
           </div>
 
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 6,
-            }}
-          >
+          <div className="w-full flex flex-col gap-[6px]">
             {CHECK_ITEMS.map((item) => (
               <div
                 key={item.label}
-                style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  gap: 10,
-                  padding: '9px 12px',
-                  borderRadius: 9,
-                  background: '#ffffff',
-                  border: '1px solid #e2e8f0',
-                }}
+                className="flex items-start gap-[10px] p-[9px_12px] rounded-[9px] bg-white border border-slate-200"
               >
-                <span
-                  style={{
-                    color: '#94a3b8',
-                    display: 'flex',
-                    flexShrink: 0,
-                    marginTop: 2,
-                  }}
-                >
+                <span className="text-slate-400 flex shrink-0 mt-[2px]">
                   {item.svg}
                 </span>
                 <div>
-                  <div
-                    style={{ fontSize: 12, fontWeight: 600, color: '#475569' }}
-                  >
+                  <div className="text-[12px] font-semibold text-slate-600">
                     {item.label}
                   </div>
-                  <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 1 }}>
+                  <div className="text-[11px] text-slate-400 mt-[1px]">
                     {item.desc}
                   </div>
                 </div>
