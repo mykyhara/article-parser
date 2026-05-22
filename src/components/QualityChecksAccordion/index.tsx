@@ -1,10 +1,11 @@
 'use client'
 import { useState } from 'react'
-import type { ParsedArticle, QualityCheckResult } from '@/types'
+import type { ParsedArticle, QualityCheckResult, QualityRules } from '@/types'
 
 type QualityChecksAccordionProps = {
   article: ParsedArticle
   result: QualityCheckResult
+  rules: QualityRules
 }
 
 type AccordionStatus = 'pass' | 'fail' | 'warn'
@@ -201,6 +202,7 @@ function imageRowStatus(img: {
 export function QualityChecksAccordion({
   article,
   result,
+  rules,
 }: QualityChecksAccordionProps) {
   const notPublicCount = article.images.filter((img) => !img.isPublic).length
   const notDriveCount = article.images.filter(
@@ -238,7 +240,7 @@ export function QualityChecksAccordion({
 
   const missingAltCount = article.images.filter((img) => !img.altTag).length
   const weakAltCount = article.images.filter(
-    (img) => img.altTag && img.altTag.length < 25
+    (img) => img.altTag && img.altTag.length < rules.altTags.minLength
   ).length
   const altBadge =
     missingAltCount > 0 || weakAltCount > 0
@@ -519,7 +521,7 @@ export function QualityChecksAccordion({
             article.images.map((img) => {
               const q = !img.altTag
                 ? 'fail'
-                : img.altTag.length < 25
+                : img.altTag.length < rules.altTags.minLength
                   ? 'warn'
                   : 'pass'
               const qLabel = { pass: 'Good', warn: 'Weak', fail: 'Missing' }[q]

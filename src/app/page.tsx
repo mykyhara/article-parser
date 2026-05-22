@@ -97,6 +97,7 @@ export default function HomePage() {
         <LeftPanel
           article={article}
           qualityResult={qualityResult}
+          rules={rules}
           isLoading={isLoading}
           error={error}
           onOpenParse={() => setParseModalOpen(true)}

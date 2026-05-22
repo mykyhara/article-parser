@@ -1,11 +1,17 @@
 'use client'
 import { QualityScoreCard } from '@/components/QualityScoreCard'
 import { QualityChecksAccordion } from '@/components/QualityChecksAccordion'
-import type { ParsedArticle, QualityCheckResult, ApiError } from '@/types'
+import type {
+  ParsedArticle,
+  QualityCheckResult,
+  QualityRules,
+  ApiError,
+} from '@/types'
 
 type LeftPanelProps = {
   article: ParsedArticle | null
   qualityResult: QualityCheckResult | null
+  rules: QualityRules
   isLoading: boolean
   error: ApiError | null
   onOpenParse: () => void
@@ -96,6 +102,7 @@ const CHECK_ITEMS = [
 export function LeftPanel({
   article,
   qualityResult,
+  rules,
   isLoading,
   error,
   onOpenParse,
@@ -285,7 +292,11 @@ export function LeftPanel({
       )}
 
       {article && qualityResult && (
-        <QualityChecksAccordion article={article} result={qualityResult} />
+        <QualityChecksAccordion
+          article={article}
+          result={qualityResult}
+          rules={rules}
+        />
       )}
     </aside>
   )
