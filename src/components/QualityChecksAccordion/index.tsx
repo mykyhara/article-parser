@@ -1,19 +1,18 @@
 'use client'
 import { useState } from 'react'
-import type { ParsedArticle, QualityCheckResult, QualityRules } from '@/types'
+import type { ParsedArticle, QualityCheckResult } from '@/types'
 
 type QualityChecksAccordionProps = {
   article: ParsedArticle
   result: QualityCheckResult
-  rules: QualityRules
 }
 
 type AccordionStatus = 'pass' | 'fail' | 'warn'
 
-const BORDER_COLOR_CLASSES: Record<AccordionStatus, string> = {
-  pass: 'border-l-green-500',
-  fail: 'border-l-red-500',
-  warn: 'border-l-amber-500',
+const BORDER_COLORS: Record<AccordionStatus, string> = {
+  pass: '#22c55e',
+  fail: '#ef4444',
+  warn: '#f59e0b',
 }
 
 function StatusIcon({ status }: { status: AccordionStatus }) {
@@ -74,16 +73,30 @@ function SmallBadge({
   status: AccordionStatus | 'neutral' | 'blue'
   children: React.ReactNode
 }) {
-  const classes = {
-    pass: 'bg-green-50 text-green-700 border-green-200',
-    fail: 'bg-red-50 text-red-800 border-red-200',
-    warn: 'bg-amber-50 text-amber-800 border-amber-200',
-    neutral: 'bg-slate-50 text-slate-600 border-slate-200',
-    blue: 'bg-blue-50 text-blue-700 border-blue-200',
+  const styles = {
+    pass: { bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0' },
+    fail: { bg: '#fef2f2', color: '#991b1b', border: '#fecaca' },
+    warn: { bg: '#fffbeb', color: '#92400e', border: '#fde68a' },
+    neutral: { bg: '#f8fafc', color: '#475569', border: '#e2e8f0' },
+    blue: { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
   }
+  const s = styles[status]
   return (
     <span
-      className={`inline-flex items-center gap-[4px] px-[7px] py-[2px] text-[11px] font-medium rounded-md border whitespace-nowrap leading-[1.4] ${classes[status]}`}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 4,
+        padding: '2px 7px',
+        fontSize: 11,
+        fontWeight: 500,
+        borderRadius: 6,
+        background: s.bg,
+        color: s.color,
+        border: `1px solid ${s.border}`,
+        whiteSpace: 'nowrap',
+        lineHeight: 1.4,
+      }}
     >
       {children}
     </span>
@@ -104,25 +117,49 @@ function AccordionItem({
   children: React.ReactNode
 }) {
   const [open, setOpen] = useState(!!defaultOpen)
-  const borderColorClass = BORDER_COLOR_CLASSES[status]
+  const borderColor = BORDER_COLORS[status]
 
   return (
     <div
-      className={`bg-white rounded-xl mb-[8px] border border-slate-200 border-l-[3px] ${borderColorClass} overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.03)]`}
+      style={{
+        background: '#ffffff',
+        borderRadius: 12,
+        marginBottom: 8,
+        border: '1px solid #e2e8f0',
+        borderLeft: `3px solid ${borderColor}`,
+        overflow: 'hidden',
+        boxShadow: '0 1px 2px rgba(0,0,0,0.03)',
+      }}
     >
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between p-[11px_14px] bg-transparent border-0 cursor-pointer text-left"
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '11px 14px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          fontFamily: 'Inter, sans-serif',
+          textAlign: 'left',
+        }}
       >
-        <div className="flex items-center gap-[8px]">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <StatusIcon status={status} />
-          <span className="text-[13px] font-semibold text-slate-900">
+          <span style={{ fontSize: 13, fontWeight: 600, color: '#0f172a' }}>
             {title}
           </span>
           {badge && <SmallBadge status={status}>{badge}</SmallBadge>}
         </div>
         <span
-          className={`text-slate-400 flex transition-[transform] duration-200 ${open ? 'rotate-180' : ''}`}
+          style={{
+            color: '#94a3b8',
+            display: 'flex',
+            transition: 'transform 0.2s',
+            transform: open ? 'rotate(180deg)' : 'none',
+          }}
         >
           <svg
             width="13"
@@ -140,7 +177,10 @@ function AccordionItem({
       </button>
 
       {open && (
-        <div className="p-[0_14px_14px] border-t border-slate-200 fade-in">
+        <div
+          style={{ padding: '0 14px 14px', borderTop: '1px solid #e2e8f0' }}
+          className="fade-in"
+        >
           {children}
         </div>
       )}
@@ -161,7 +201,6 @@ function imageRowStatus(img: {
 export function QualityChecksAccordion({
   article,
   result,
-  rules,
 }: QualityChecksAccordionProps) {
   const notPublicCount = article.images.filter((img) => !img.isPublic).length
   const notDriveCount = article.images.filter(
@@ -182,14 +221,24 @@ export function QualityChecksAccordion({
     ? 'pass'
     : 'fail'
 
-  const thClass =
-    'text-left p-[7px_8px] text-[11px] font-medium text-slate-400 border-b border-slate-200'
-  const tdClass =
-    'p-[8px_8px] text-[12px] border-b border-slate-200 text-slate-900'
+  const thS: React.CSSProperties = {
+    textAlign: 'left',
+    padding: '7px 8px',
+    fontSize: 11,
+    fontWeight: 500,
+    color: '#94a3b8',
+    borderBottom: '1px solid #e2e8f0',
+  }
+  const tdS: React.CSSProperties = {
+    padding: '8px 8px',
+    fontSize: 12,
+    borderBottom: '1px solid #e2e8f0',
+    color: '#0f172a',
+  }
 
   const missingAltCount = article.images.filter((img) => !img.altTag).length
   const weakAltCount = article.images.filter(
-    (img) => img.altTag && img.altTag.length < rules.altTags.minLength
+    (img) => img.altTag && img.altTag.length < 25
   ).length
   const altBadge =
     missingAltCount > 0 || weakAltCount > 0
@@ -198,7 +247,16 @@ export function QualityChecksAccordion({
 
   return (
     <div>
-      <div className="text-[11px] font-semibold text-slate-400 mb-[10px] tracking-[0.06em] uppercase">
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: '#94a3b8',
+          marginBottom: 10,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+        }}
+      >
         Quality Checks
       </div>
 
@@ -216,19 +274,30 @@ export function QualityChecksAccordion({
         status={imgStatus}
         defaultOpen
       >
-        <div className="mt-[10px] overflow-x-auto">
+        <div style={{ marginTop: 10, overflowX: 'auto' }}>
           {article.images.length === 0 ? (
-            <p className="text-[12px] text-slate-400 italic">
+            <p style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>
               No images found in the document.
             </p>
           ) : (
             <>
               {(notPublicCount > 0 || notDriveCount > 0) && (
-                <div className="flex gap-[8px] items-start p-[9px_11px] mb-[10px] bg-amber-50 border border-amber-200 rounded-lg">
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: 8,
+                    alignItems: 'flex-start',
+                    padding: '9px 11px',
+                    marginBottom: 10,
+                    background: '#fffbeb',
+                    border: '1px solid #fde68a',
+                    borderRadius: 8,
+                  }}
+                >
                   <svg
                     width="13"
                     height="13"
-                    className="shrink-0 mt-px"
+                    style={{ flexShrink: 0, marginTop: 1 }}
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="#f59e0b"
@@ -240,7 +309,14 @@ export function QualityChecksAccordion({
                     <line x1="12" y1="9" x2="12" y2="13" />
                     <line x1="12" y1="17" x2="12.01" y2="17" />
                   </svg>
-                  <p className="text-[11.5px] text-amber-800 m-0 leading-[1.55]">
+                  <p
+                    style={{
+                      fontSize: 11.5,
+                      color: '#92400e',
+                      margin: 0,
+                      lineHeight: 1.55,
+                    }}
+                  >
                     {notPublicCount > 0 && (
                       <>
                         {notPublicCount} image{notPublicCount > 1 ? 's' : ''}{' '}
@@ -259,14 +335,20 @@ export function QualityChecksAccordion({
                   </p>
                 </div>
               )}
-              <table className="w-full border-collapse text-[12px]">
+              <table
+                style={{
+                  width: '100%',
+                  borderCollapse: 'collapse',
+                  fontSize: 12,
+                }}
+              >
                 <thead>
                   <tr>
-                    <th className={`${thClass} w-[28px]`}>#</th>
-                    <th className={thClass}>Alt Tag</th>
-                    <th className={`${thClass} w-[52px]`}>Drive</th>
-                    <th className={`${thClass} w-[60px]`}>Public</th>
-                    <th className={`${thClass} w-[52px]`}>Access</th>
+                    <th style={{ ...thS, width: 28 }}>#</th>
+                    <th style={thS}>Alt Tag</th>
+                    <th style={{ ...thS, width: 52 }}>Drive</th>
+                    <th style={{ ...thS, width: 60 }}>Public</th>
+                    <th style={{ ...thS, width: 52 }}>Access</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -275,28 +357,41 @@ export function QualityChecksAccordion({
                     return (
                       <tr key={img.index}>
                         <td
-                          className={`${tdClass} text-slate-400 font-semibold text-[11px]`}
+                          style={{
+                            ...tdS,
+                            color: '#94a3b8',
+                            fontWeight: 600,
+                            fontSize: 11,
+                          }}
                         >
                           {img.index}
                         </td>
                         <td
-                          className={`${tdClass} max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap ${img.altTag ? 'text-slate-900' : 'text-slate-400 italic'}`}
+                          style={{
+                            ...tdS,
+                            maxWidth: 120,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            color: img.altTag ? '#0f172a' : '#94a3b8',
+                            fontStyle: img.altTag ? 'normal' : 'italic',
+                          }}
                         >
                           {img.altTag || 'No alt tag'}
                         </td>
-                        <td className={tdClass}>
+                        <td style={tdS}>
                           <SmallBadge
                             status={img.isGoogleDrive ? 'pass' : 'fail'}
                           >
                             {img.isGoogleDrive ? 'Yes' : 'No'}
                           </SmallBadge>
                         </td>
-                        <td className={tdClass}>
+                        <td style={tdS}>
                           <SmallBadge status={img.isPublic ? 'pass' : 'warn'}>
                             {img.isPublic ? 'Yes' : 'No'}
                           </SmallBadge>
                         </td>
-                        <td className={tdClass}>
+                        <td style={tdS}>
                           <StatusIcon status={rowStatus} />
                         </td>
                       </tr>
@@ -314,17 +409,29 @@ export function QualityChecksAccordion({
         badge={`${article.links.filter((l) => l.isProductLink).length} links`}
         status={linkStatus}
       >
-        <div className="mt-[10px]">
+        <div style={{ marginTop: 10 }}>
           {article.links.length === 0 ? (
-            <p className="text-[12px] text-slate-400 italic">No links found.</p>
+            <p style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>
+              No links found.
+            </p>
           ) : (
-            <div className="flex flex-col gap-[6px]">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {article.links.map((link, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-[8px] p-[7px_10px] bg-slate-50 rounded-lg border border-slate-200"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '7px 10px',
+                    background: '#f8fafc',
+                    borderRadius: 8,
+                    border: '1px solid #e2e8f0',
+                  }}
                 >
-                  <span className="text-green-500 flex shrink-0">
+                  <span
+                    style={{ color: '#22c55e', display: 'flex', flexShrink: 0 }}
+                  >
                     <svg
                       width="12"
                       height="12"
@@ -339,13 +446,40 @@ export function QualityChecksAccordion({
                       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                     </svg>
                   </span>
-                  <span className="text-[12px] text-slate-900 font-medium flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: '#0f172a',
+                      fontWeight: 500,
+                      flex: 1,
+                      minWidth: 0,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
                     {link.text || link.url}
                   </span>
-                  <span className="text-[11px] text-slate-400 bg-white px-[7px] py-[2px] rounded border border-slate-200 max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap shrink-0">
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: '#94a3b8',
+                      background: '#ffffff',
+                      padding: '2px 7px',
+                      borderRadius: 4,
+                      border: '1px solid #e2e8f0',
+                      maxWidth: 150,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    }}
+                  >
                     {link.domain}
                   </span>
-                  <span className="text-slate-400 flex shrink-0">
+                  <span
+                    style={{ color: '#94a3b8', display: 'flex', flexShrink: 0 }}
+                  >
                     <svg
                       width="11"
                       height="11"
@@ -369,31 +503,58 @@ export function QualityChecksAccordion({
       </AccordionItem>
 
       <AccordionItem title="Alt Tags" badge={altBadge} status={altStatus}>
-        <div className="mt-[10px] flex flex-col gap-[7px]">
+        <div
+          style={{
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 7,
+          }}
+        >
           {article.images.length === 0 ? (
-            <p className="text-[12px] text-slate-400 italic">
+            <p style={{ fontSize: 12, color: '#94a3b8', fontStyle: 'italic' }}>
               No images found.
             </p>
           ) : (
             article.images.map((img) => {
               const q = !img.altTag
                 ? 'fail'
-                : img.altTag.length < rules.altTags.minLength
+                : img.altTag.length < 25
                   ? 'warn'
                   : 'pass'
               const qLabel = { pass: 'Good', warn: 'Weak', fail: 'Missing' }[q]
               return (
                 <div
                   key={img.index}
-                  className="p-[9px_11px] bg-slate-50 rounded-lg border border-slate-200"
+                  style={{
+                    padding: '9px 11px',
+                    background: '#f8fafc',
+                    borderRadius: 8,
+                    border: '1px solid #e2e8f0',
+                  }}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[11px] font-semibold text-slate-400">
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginBottom: 4,
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: '#94a3b8',
+                      }}
+                    >
                       Image {img.index}
                     </span>
-                    <div className="flex items-center gap-[6px]">
+                    <div
+                      style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+                    >
                       {img.altTag.length > 0 && (
-                        <span className="text-[11px] text-slate-400">
+                        <span style={{ fontSize: 11, color: '#94a3b8' }}>
                           {img.altTag.length} chars
                         </span>
                       )}
@@ -403,7 +564,13 @@ export function QualityChecksAccordion({
                     </div>
                   </div>
                   <p
-                    className={`text-[12px] m-0 leading-[1.5] ${img.altTag ? 'text-slate-900' : 'text-slate-400 italic'}`}
+                    style={{
+                      fontSize: 12,
+                      color: img.altTag ? '#0f172a' : '#94a3b8',
+                      fontStyle: img.altTag ? 'normal' : 'italic',
+                      margin: 0,
+                      lineHeight: 1.5,
+                    }}
                   >
                     {img.altTag || 'No alt tag found'}
                   </p>
@@ -415,7 +582,9 @@ export function QualityChecksAccordion({
       </AccordionItem>
 
       <AccordionItem title="Formatting" status={fmtStatus}>
-        <div className="mt-[10px] flex flex-wrap gap-[7px]">
+        <div
+          style={{ marginTop: 10, display: 'flex', flexWrap: 'wrap', gap: 7 }}
+        >
           {[
             {
               label: `${article.formatting.h1Count} H1`,

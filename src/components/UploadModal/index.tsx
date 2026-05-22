@@ -25,8 +25,17 @@ const MOCK_RESPONSE_TEMPLATE = (res: UploadResponse) =>
     2
   )
 
-const roInputClass =
-  'text-[13px] text-slate-900 border border-slate-200 rounded-lg p-[8px_12px] bg-slate-50 outline-none w-full'
+const roInput: React.CSSProperties = {
+  fontFamily: 'Inter, sans-serif',
+  fontSize: 13,
+  color: '#0f172a',
+  border: '1px solid #e2e8f0',
+  borderRadius: 8,
+  padding: '8px 12px',
+  background: '#f8fafc',
+  outline: 'none',
+  width: '100%',
+}
 
 export function UploadModal({
   open,
@@ -78,23 +87,67 @@ export function UploadModal({
       await navigator.clipboard.writeText(payload.articleHtml)
       setCopied(true)
       setTimeout(() => setCopied(false), 1800)
-    } catch {}
+    } catch {
+      /* denied */
+    }
   }
 
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-[3px] z-[60] flex items-center justify-center p-[20px]">
-      <div className="fade-in bg-white rounded-2xl w-full max-w-[640px] max-h-[90vh] flex flex-col shadow-[0_24px_64px_rgba(0,0,0,0.22)]">
-        <div className="p-[18px_22px] border-b border-slate-200 flex items-center justify-between shrink-0">
-          <div className="text-[15px] font-bold text-slate-900">
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(15,23,42,0.5)',
+        backdropFilter: 'blur(3px)',
+        zIndex: 60,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+      }}
+    >
+      <div
+        className="fade-in"
+        style={{
+          background: '#ffffff',
+          borderRadius: 16,
+          width: '100%',
+          maxWidth: 640,
+          maxHeight: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.22)',
+        }}
+      >
+        <div
+          style={{
+            padding: '18px 22px',
+            borderBottom: '1px solid #e2e8f0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>
             {phase === 'success'
               ? 'Upload Complete'
               : 'Review WordPress Payload'}
           </div>
           <button
             onClick={handleClose}
-            className="bg-transparent border-0 cursor-pointer text-slate-400 p-[6px] rounded-md flex items-center"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#94a3b8',
+              padding: 6,
+              borderRadius: 6,
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
             <svg
               width="15"
@@ -112,9 +165,17 @@ export function UploadModal({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-[22px]">
+        <div style={{ flex: 1, overflowY: 'auto', padding: '22px 22px' }}>
           {phase === 'loading' && (
-            <div className="flex flex-col items-center gap-[14px] py-[32px]">
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 14,
+                padding: '32px 0',
+              }}
+            >
               <svg
                 width="36"
                 height="36"
@@ -128,15 +189,24 @@ export function UploadModal({
               >
                 <path d="M21 12a9 9 0 1 1-6.219-8.56" />
               </svg>
-              <span className="text-[14px] font-medium text-slate-600">
+              <span style={{ fontSize: 14, fontWeight: 500, color: '#475569' }}>
                 Sending to WordPress…
               </span>
             </div>
           )}
 
           {phase === 'success' && response && (
-            <div className="fade-in flex flex-col items-center gap-[16px] pt-[8px]">
-              <span className="text-green-500 success-icon">
+            <div
+              className="fade-in"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 16,
+                paddingTop: 8,
+              }}
+            >
+              <span style={{ color: '#22c55e' }} className="success-icon">
                 <svg
                   width="44"
                   height="44"
@@ -151,17 +221,40 @@ export function UploadModal({
                   <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
               </span>
-              <div className="text-center">
-                <div className="text-[16px] font-bold text-slate-900 mb-1">
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: '#0f172a',
+                    marginBottom: 4,
+                  }}
+                >
                   Successfully sent to WordPress
                 </div>
-                <div className="text-[13px] text-slate-400">
+                <div style={{ fontSize: 13, color: '#94a3b8' }}>
                   The article has been created as a draft post and is ready for
                   review.
                 </div>
               </div>
-              <div className="w-full bg-slate-900 rounded-[10px] p-[14px_16px]">
-                <pre className="font-mono m-0 text-[12px] text-slate-400 leading-[1.65] whitespace-pre-wrap">
+              <div
+                style={{
+                  width: '100%',
+                  background: '#0f172a',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                }}
+              >
+                <pre
+                  style={{
+                    margin: 0,
+                    fontSize: 12,
+                    color: '#94a3b8',
+                    fontFamily: 'monospace',
+                    lineHeight: 1.65,
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
                   {MOCK_RESPONSE_TEMPLATE(response)}
                 </pre>
               </div>
@@ -169,7 +262,16 @@ export function UploadModal({
           )}
 
           {phase === 'error' && (
-            <div className="p-[12px_14px] bg-red-50 border border-red-200 rounded-lg text-red-800 text-[13px]">
+            <div
+              style={{
+                padding: '12px 14px',
+                background: '#fef2f2',
+                border: '1px solid #fecaca',
+                borderRadius: 8,
+                color: '#991b1b',
+                fontSize: 13,
+              }}
+            >
               {errorMsg}
             </div>
           )}
@@ -189,8 +291,18 @@ export function UploadModal({
                   multi: false,
                 },
               ].map((f) => (
-                <div key={f.label} className="mb-[14px]">
-                  <label className="text-[11px] font-semibold text-slate-400 block mb-[5px] uppercase tracking-[0.06em]">
+                <div key={f.label} style={{ marginBottom: 14 }}>
+                  <label
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: '#94a3b8',
+                      display: 'block',
+                      marginBottom: 5,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                    }}
+                  >
                     {f.label}
                   </label>
                   {f.multi ? (
@@ -198,26 +310,49 @@ export function UploadModal({
                       readOnly
                       value={f.val}
                       rows={3}
-                      className={`${roInputClass} resize-none`}
+                      style={{ ...roInput, resize: 'none' }}
                     />
                   ) : (
-                    <input
-                      readOnly
-                      type="text"
-                      value={f.val}
-                      className={roInputClass}
-                    />
+                    <input readOnly type="text" value={f.val} style={roInput} />
                   )}
                 </div>
               ))}
               <div>
-                <div className="flex items-center justify-between mb-[5px]">
-                  <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.06em]">
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: 5,
+                  }}
+                >
+                  <label
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: '#94a3b8',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                    }}
+                  >
                     Article HTML
                   </label>
                   <button
                     onClick={handleCopyHtml}
-                    className="flex items-center gap-[4px] bg-slate-800 text-slate-400 border border-slate-700 rounded-md px-[9px] py-[4px] text-[11px] font-medium cursor-pointer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4,
+                      background: '#1e293b',
+                      color: '#94a3b8',
+                      border: '1px solid #334155',
+                      borderRadius: 6,
+                      padding: '4px 9px',
+                      fontSize: 11,
+                      fontWeight: 500,
+                      cursor: 'pointer',
+                      fontFamily: 'Inter, sans-serif',
+                    }}
                   >
                     <svg
                       width="12"
@@ -235,7 +370,21 @@ export function UploadModal({
                     {copied ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
-                <pre className="font-mono bg-slate-900 text-slate-200 p-[14px] rounded-lg text-[11.5px] leading-relaxed max-h-[200px] overflow-y-auto m-0 whitespace-pre-wrap">
+                <pre
+                  style={{
+                    background: '#0f172a',
+                    color: '#e2e8f0',
+                    padding: 14,
+                    borderRadius: 8,
+                    fontSize: 11.5,
+                    lineHeight: 1.6,
+                    maxHeight: 200,
+                    overflowY: 'auto',
+                    margin: 0,
+                    fontFamily: 'monospace',
+                    whiteSpace: 'pre-wrap',
+                  }}
+                >
                   {payload.articleHtml}
                 </pre>
               </div>
@@ -243,14 +392,33 @@ export function UploadModal({
           )}
         </div>
 
-        <div className="p-[14px_22px] border-t border-slate-200 flex justify-end gap-[8px] shrink-0">
+        <div
+          style={{
+            padding: '14px 22px',
+            borderTop: '1px solid #e2e8f0',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 8,
+            flexShrink: 0,
+          }}
+        >
           {phase === 'success' ? (
             <button
               onClick={() => {
                 handleClose()
                 onUploadSuccess?.()
               }}
-              className="px-[20px] py-[8px] rounded-lg bg-slate-900 text-white text-[13px] font-semibold cursor-pointer border-0"
+              style={{
+                padding: '8px 20px',
+                borderRadius: 8,
+                background: '#0f172a',
+                color: '#ffffff',
+                fontSize: 13,
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                border: 'none',
+              }}
             >
               Done
             </button>
@@ -258,13 +426,33 @@ export function UploadModal({
             <>
               <button
                 onClick={handleClose}
-                className="px-[16px] py-[8px] rounded-lg bg-transparent text-slate-600 text-[13px] font-semibold cursor-pointer border border-slate-200"
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  background: 'transparent',
+                  color: '#475569',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontFamily: 'Inter, sans-serif',
+                  border: '1px solid #e2e8f0',
+                }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-[20px] py-[8px] rounded-lg bg-green-500 text-white text-[13px] font-semibold cursor-pointer border-0"
+                style={{
+                  padding: '8px 20px',
+                  borderRadius: 8,
+                  background: '#22c55e',
+                  color: '#ffffff',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontFamily: 'Inter, sans-serif',
+                  border: 'none',
+                }}
               >
                 Confirm Upload
               </button>

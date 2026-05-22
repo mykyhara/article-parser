@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { parseGoogleDoc } from '@/lib/docParser'
 
-export const dynamic = 'force-dynamic'
-
 /** Extract a Google Doc ID from either a raw ID string or a full Google Docs URL. */
 function extractDocId(raw: string): string | null {
   if (/^[\w-]{25,}$/.test(raw)) return raw

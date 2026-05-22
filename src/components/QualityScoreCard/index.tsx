@@ -8,31 +8,31 @@ type QualityScoreCardProps = {
 const STATUS_CONFIG: Record<
   QualityStatus,
   {
-    bgClass: string
-    colorClass: string
-    borderClass: string
+    bg: string
+    color: string
+    border: string
     label: string
     ringColor: string
   }
 > = {
   PASS: {
-    bgClass: 'bg-green-50',
-    colorClass: 'text-green-700',
-    borderClass: 'border-green-200',
+    bg: '#f0fdf4',
+    color: '#15803d',
+    border: '#bbf7d0',
     label: 'PASS',
     ringColor: '#22c55e',
   },
   NEEDS_REVIEW: {
-    bgClass: 'bg-amber-50',
-    colorClass: 'text-amber-800',
-    borderClass: 'border-amber-200',
+    bg: '#fffbeb',
+    color: '#92400e',
+    border: '#fde68a',
     label: 'NEEDS REVIEW',
     ringColor: '#f59e0b',
   },
   FAIL: {
-    bgClass: 'bg-red-50',
-    colorClass: 'text-red-800',
-    borderClass: 'border-red-200',
+    bg: '#fef2f2',
+    color: '#991b1b',
+    border: '#fecaca',
     label: 'FAIL',
     ringColor: '#ef4444',
   },
@@ -63,8 +63,8 @@ function ScoreRing({
   const color = STATUS_CONFIG[status].ringColor
 
   return (
-    <div className="relative w-[124px] h-[124px]">
-      <svg width={SIZE} height={SIZE} className="-rotate-90">
+    <div style={{ position: 'relative', width: SIZE, height: SIZE }}>
+      <svg width={SIZE} height={SIZE} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={SIZE / 2}
           cy={SIZE / 2}
@@ -83,14 +83,39 @@ function ScoreRing({
           strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={offset}
-          className="stroke-dash-transition"
+          style={{
+            transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1)',
+          }}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[28px] font-bold text-slate-900 leading-none">
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <span
+          style={{
+            fontSize: 28,
+            fontWeight: 700,
+            color: '#0f172a',
+            lineHeight: 1,
+          }}
+        >
           {score}
         </span>
-        <span className="text-[11px] text-slate-400 font-medium mt-px">
+        <span
+          style={{
+            fontSize: 11,
+            color: '#94a3b8',
+            fontWeight: 500,
+            marginTop: 1,
+          }}
+        >
           / 100
         </span>
       </div>
@@ -158,27 +183,44 @@ function CheckChip({
   warn: boolean
 }) {
   const status = pass ? 'pass' : warn ? 'warn' : 'fail'
-  const classes = {
+  const colors = {
     pass: {
-      chip: 'bg-green-50 border-green-200 text-green-700',
-      icon: 'text-green-500',
+      bg: '#f0fdf4',
+      color: '#15803d',
+      border: '#bbf7d0',
+      icon: '#22c55e',
     },
     warn: {
-      chip: 'bg-amber-50 border-amber-200 text-amber-800',
-      icon: 'text-amber-500',
+      bg: '#fffbeb',
+      color: '#92400e',
+      border: '#fde68a',
+      icon: '#f59e0b',
     },
     fail: {
-      chip: 'bg-red-50 border-red-200 text-red-800',
-      icon: 'text-red-500',
+      bg: '#fef2f2',
+      color: '#991b1b',
+      border: '#fecaca',
+      icon: '#ef4444',
     },
   }
-  const c = classes[status]
+  const c = colors[status]
 
   return (
     <div
-      className={`flex items-center gap-[6px] p-[7px_12px] rounded-lg border text-[12px] font-medium ${c.chip}`}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        padding: '7px 12px',
+        borderRadius: 8,
+        background: c.bg,
+        border: `1px solid ${c.border}`,
+        color: c.color,
+        fontSize: 12,
+        fontWeight: 500,
+      }}
     >
-      <span className={`${c.icon} flex shrink-0`}>
+      <span style={{ color: c.icon, display: 'flex', flexShrink: 0 }}>
         <ChipIcon pass={pass} warn={warn} />
       </span>
       {label}
@@ -189,14 +231,44 @@ function CheckChip({
 export function QualityScoreCard({ result }: QualityScoreCardProps) {
   if (!result) {
     return (
-      <div className="bg-white border border-slate-200 rounded-xl p-[20px_18px_20px] mb-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="text-[11px] font-semibold text-slate-400 mb-[16px] tracking-[0.06em] uppercase">
+      <div
+        style={{
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
+          borderRadius: 12,
+          padding: '20px 18px 20px',
+          marginBottom: 10,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: '#94a3b8',
+            marginBottom: 16,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
           Quality Score
         </div>
 
-        <div className="flex flex-col items-center gap-[12px] mb-[20px]">
-          <div className="relative w-[124px] h-[124px]">
-            <svg width={124} height={124} className="-rotate-90">
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 12,
+            marginBottom: 20,
+          }}
+        >
+          <div style={{ position: 'relative', width: 124, height: 124 }}>
+            <svg
+              width={124}
+              height={124}
+              style={{ transform: 'rotate(-90deg)' }}
+            >
               <circle
                 cx={62}
                 cy={62}
@@ -206,27 +278,78 @@ export function QualityScoreCard({ result }: QualityScoreCardProps) {
                 strokeWidth={10}
               />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-[28px] font-bold text-slate-300 leading-none">
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <span
+                style={{
+                  fontSize: 28,
+                  fontWeight: 700,
+                  color: '#cbd5e1',
+                  lineHeight: 1,
+                }}
+              >
                 —
               </span>
-              <span className="text-[11px] text-slate-300 font-medium mt-px">
+              <span
+                style={{
+                  fontSize: 11,
+                  color: '#cbd5e1',
+                  fontWeight: 500,
+                  marginTop: 1,
+                }}
+              >
                 / 100
               </span>
             </div>
           </div>
-          <span className="inline-flex items-center gap-[5px] px-[10px] py-[4px] rounded-[7px] text-[12px] font-semibold bg-slate-50 text-slate-400 border border-slate-200">
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              padding: '4px 10px',
+              borderRadius: 7,
+              fontSize: 12,
+              fontWeight: 600,
+              background: '#f8fafc',
+              color: '#94a3b8',
+              border: '1px solid #e2e8f0',
+            }}
+          >
             Awaiting document
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-[8px]">
+        <div
+          style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}
+        >
           {CHECK_CONFIG.map(({ label }) => (
             <div
               key={label}
-              className="flex items-center gap-[6px] p-[7px_12px] rounded-lg bg-slate-50 border border-slate-200 text-slate-300 text-[12px] font-medium"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '7px 12px',
+                borderRadius: 8,
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                color: '#cbd5e1',
+                fontSize: 12,
+                fontWeight: 500,
+              }}
             >
-              <span className="flex shrink-0 text-slate-200">
+              <span
+                style={{ display: 'flex', flexShrink: 0, color: '#e2e8f0' }}
+              >
                 <svg
                   width="13"
                   height="13"
@@ -251,16 +374,52 @@ export function QualityScoreCard({ result }: QualityScoreCardProps) {
   const cfg = STATUS_CONFIG[result.status]
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-[18px_18px_20px] mb-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-      <div className="text-[11px] font-semibold text-slate-400 mb-[16px] tracking-[0.06em] uppercase">
+    <div
+      style={{
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: 12,
+        padding: '18px 18px 20px',
+        marginBottom: 10,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      }}
+    >
+      <div
+        style={{
+          fontSize: 11,
+          fontWeight: 600,
+          color: '#94a3b8',
+          marginBottom: 16,
+          letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+        }}
+      >
         Quality Score
       </div>
 
-      <div className="flex flex-col items-center gap-[12px]">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 12,
+        }}
+      >
         <ScoreRing score={result.score} status={result.status} />
 
         <span
-          className={`inline-flex items-center gap-[5px] px-[10px] py-[4px] rounded-[7px] text-[12px] font-semibold border ${cfg.bgClass} ${cfg.colorClass} ${cfg.borderClass}`}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '4px 10px',
+            borderRadius: 7,
+            fontSize: 12,
+            fontWeight: 600,
+            background: cfg.bg,
+            color: cfg.color,
+            border: `1px solid ${cfg.border}`,
+          }}
         >
           {result.status === 'NEEDS_REVIEW' && (
             <svg
@@ -280,7 +439,14 @@ export function QualityScoreCard({ result }: QualityScoreCardProps) {
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-[8px] mt-[18px]">
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 8,
+          marginTop: 18,
+        }}
+      >
         {CHECK_CONFIG.map(({ key, label }) => (
           <CheckChip
             key={key}

@@ -55,7 +55,8 @@ function ArticleBody({ html }: { html: string }) {
   return (
     <div
       ref={ref}
-      className="article-body min-h-[200px] overflow-y-auto pb-6"
+      className="article-body"
+      style={{ minHeight: 200, overflowY: 'auto', paddingBottom: 24 }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )
@@ -70,25 +71,68 @@ export function ArticlePreviewPanel({ articleHtml }: ArticlePreviewPanelProps) {
       await navigator.clipboard.writeText(articleHtml)
       setCopied(true)
       setTimeout(() => setCopied(false), 1800)
-    } catch {}
+    } catch {
+      /* clipboard denied */
+    }
   }
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-[18px_18px_0] mb-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-      <div className="flex items-center justify-between mb-[14px]">
-        <div className="text-[11px] font-semibold text-slate-400 tracking-[0.06em] uppercase">
+    <div
+      style={{
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: 12,
+        padding: '18px 18px 0',
+        marginBottom: 10,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 14,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 600,
+            color: '#94a3b8',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+          }}
+        >
           Article Preview
         </div>
-        <div className="flex bg-slate-50 rounded-lg p-[3px] border border-slate-200 gap-[2px]">
+        <div
+          style={{
+            display: 'flex',
+            background: '#f8fafc',
+            borderRadius: 8,
+            padding: 3,
+            border: '1px solid #e2e8f0',
+            gap: 2,
+          }}
+        >
           {(['preview', 'html'] as const).map((key) => (
             <button
               key={key}
               onClick={() => setTab(key)}
-              className={`px-[12px] py-[4px] rounded-md border-0 cursor-pointer text-[12px] font-medium transition-all ${
-                tab === key
-                  ? 'bg-white text-slate-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)]'
-                  : 'bg-transparent text-slate-400'
-              }`}
+              style={{
+                padding: '4px 12px',
+                borderRadius: 6,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 12,
+                fontWeight: 500,
+                fontFamily: 'Inter, sans-serif',
+                background: tab === key ? '#ffffff' : 'transparent',
+                color: tab === key ? '#0f172a' : '#94a3b8',
+                boxShadow: tab === key ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+                transition: 'all 0.12s',
+              }}
             >
               {key === 'preview' ? 'Preview' : 'Raw HTML'}
             </button>
@@ -99,10 +143,28 @@ export function ArticlePreviewPanel({ articleHtml }: ArticlePreviewPanelProps) {
       {tab === 'preview' ? (
         <ArticleBody html={articleHtml} />
       ) : (
-        <div className="relative">
+        <div style={{ position: 'relative' }}>
           <button
             onClick={handleCopy}
-            className="absolute top-[10px] right-[10px] z-[2] flex items-center gap-[5px] px-[10px] py-[5px] rounded-md text-[11px] font-medium cursor-pointer bg-slate-800 text-slate-400 border border-slate-700 transition-all"
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              zIndex: 2,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 5,
+              padding: '5px 10px',
+              borderRadius: 6,
+              fontSize: 11,
+              fontWeight: 500,
+              fontFamily: 'Inter, sans-serif',
+              cursor: 'pointer',
+              background: '#1e293b',
+              color: '#94a3b8',
+              border: '1px solid #334155',
+              transition: 'all 0.15s',
+            }}
           >
             <svg
               width="12"
@@ -119,8 +181,24 @@ export function ArticlePreviewPanel({ articleHtml }: ArticlePreviewPanelProps) {
             </svg>
             {copied ? 'Copied!' : 'Copy HTML'}
           </button>
-          <pre className="font-code max-h-[520px] overflow-y-auto m-0 p-[14px_14px_18px] bg-slate-900 text-slate-400 rounded-[0_0_10px_10px] text-[12px] leading-[1.65] whitespace-pre-wrap break-all">
-            <code className="text-slate-200">{articleHtml}</code>
+          <pre
+            style={{
+              maxHeight: 520,
+              overflowY: 'auto',
+              margin: 0,
+              padding: '14px 14px 18px',
+              background: '#0f172a',
+              color: '#94a3b8',
+              borderRadius: '0 0 10px 10px',
+              fontSize: 12,
+              lineHeight: 1.65,
+              fontFamily:
+                "'Fira Code', 'Cascadia Code', 'Courier New', monospace",
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-all',
+            }}
+          >
+            <code style={{ color: '#e2e8f0' }}>{articleHtml}</code>
           </pre>
         </div>
       )}

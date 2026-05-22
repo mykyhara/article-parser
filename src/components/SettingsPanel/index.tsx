@@ -10,12 +10,37 @@ type SettingsPanelProps = {
   onClose: () => void
 }
 
-const labelClass =
-  'text-[11px] font-semibold text-slate-600 block mb-[5px] tracking-[0.04em] uppercase'
-const inputClass =
-  'text-[13px] text-slate-900 border border-slate-200 rounded-lg p-[7px_10px] bg-white outline-none w-full transition-all'
-const groupTitleClass =
-  'text-[11px] font-bold text-slate-400 mb-[12px] pb-[8px] border-b border-slate-200 tracking-[0.08em] uppercase'
+const labelS: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  color: '#475569',
+  display: 'block',
+  marginBottom: 5,
+  letterSpacing: '0.04em',
+  textTransform: 'uppercase',
+}
+const inputS: React.CSSProperties = {
+  fontFamily: 'Inter, sans-serif',
+  fontSize: 13,
+  color: '#0f172a',
+  border: '1px solid #e2e8f0',
+  borderRadius: 8,
+  padding: '7px 10px',
+  background: '#ffffff',
+  outline: 'none',
+  width: '100%',
+  transition: 'border-color 0.15s, box-shadow 0.15s',
+}
+const groupTitleS: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 700,
+  color: '#94a3b8',
+  marginBottom: 12,
+  paddingBottom: 8,
+  borderBottom: '1px solid #e2e8f0',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+}
 
 export function SettingsPanel({
   open,
@@ -83,24 +108,65 @@ export function SettingsPanel({
     <>
       <div
         onClick={onClose}
-        className={`fixed inset-0 bg-slate-900/35 backdrop-blur-[2px] z-40 transition-opacity duration-[250ms] ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(15,23,42,0.35)',
+          backdropFilter: 'blur(2px)',
+          zIndex: 40,
+          opacity: open ? 1 : 0,
+          pointerEvents: open ? 'auto' : 'none',
+          transition: 'opacity 0.25s',
+        }}
       />
 
       <div
-        className={`fixed top-0 right-0 h-screen w-[376px] bg-white border-l border-slate-200 shadow-[-6px_0_32px_rgba(0,0,0,0.1)] z-50 flex flex-col transition-transform duration-[280ms] ease-in-out ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          height: '100vh',
+          width: 376,
+          background: '#ffffff',
+          borderLeft: '1px solid #e2e8f0',
+          boxShadow: '-6px 0 32px rgba(0,0,0,0.1)',
+          zIndex: 50,
+          display: 'flex',
+          flexDirection: 'column',
+          transform: open ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 0.28s cubic-bezier(0.4,0,0.2,1)',
+        }}
       >
-        <div className="p-[18px_22px] border-b border-slate-200 flex items-center justify-between shrink-0">
+        <div
+          style={{
+            padding: '18px 22px',
+            borderBottom: '1px solid #e2e8f0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexShrink: 0,
+          }}
+        >
           <div>
-            <div className="text-[15px] font-bold text-slate-900">
+            <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>
               Quality Rules Configuration
             </div>
-            <div className="text-[12px] text-slate-400 mt-[2px]">
+            <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
               Set thresholds for all checks
             </div>
           </div>
           <button
             onClick={onClose}
-            className="bg-transparent border-0 cursor-pointer text-slate-400 p-[6px] rounded-md flex items-center"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#94a3b8',
+              padding: 6,
+              borderRadius: 6,
+              display: 'flex',
+              alignItems: 'center',
+            }}
           >
             <svg
               width="15"
@@ -118,10 +184,16 @@ export function SettingsPanel({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-[22px]">
-          <div className="mb-[24px]">
-            <div className={groupTitleClass}>Images</div>
-            <div className="grid grid-cols-2 gap-[12px]">
+        <div style={{ flex: 1, overflowY: 'auto', padding: '22px 22px' }}>
+          <div style={{ marginBottom: 24 }}>
+            <div style={groupTitleS}>Images</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: 12,
+              }}
+            >
               {(
                 [
                   ['min', 'Min Images'],
@@ -129,22 +201,29 @@ export function SettingsPanel({
                 ] as const
               ).map(([k, lbl]) => (
                 <div key={k}>
-                  <label className={labelClass}>{lbl}</label>
+                  <label style={labelS}>{lbl}</label>
                   <input
                     type="number"
                     min={0}
                     value={draft.images[k]}
                     onChange={(e) => updateNum('images', k, e.target.value)}
-                    className={inputClass}
+                    style={inputS}
                   />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="mb-[24px]">
-            <div className={groupTitleClass}>Product Links</div>
-            <div className="grid grid-cols-2 gap-[12px] mb-[14px]">
+          <div style={{ marginBottom: 24 }}>
+            <div style={groupTitleS}>Product Links</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: 12,
+                marginBottom: 14,
+              }}
+            >
               {(
                 [
                   ['min', 'Min Links'],
@@ -152,7 +231,7 @@ export function SettingsPanel({
                 ] as const
               ).map(([k, lbl]) => (
                 <div key={k}>
-                  <label className={labelClass}>{lbl}</label>
+                  <label style={labelS}>{lbl}</label>
                   <input
                     type="number"
                     min={0}
@@ -160,24 +239,51 @@ export function SettingsPanel({
                     onChange={(e) =>
                       updateNum('productLinks', k, e.target.value)
                     }
-                    className={inputClass}
+                    style={inputS}
                   />
                 </div>
               ))}
             </div>
             <div>
-              <label className={labelClass}>Domain Filter</label>
+              <label style={labelS}>Domain Filter</label>
               {domains.length > 0 && (
-                <div className="flex flex-wrap gap-[6px] mb-[8px]">
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 6,
+                    marginBottom: 8,
+                  }}
+                >
                   {domains.map((d) => (
                     <span
                       key={d}
-                      className="inline-flex items-center gap-[5px] bg-blue-50 text-blue-700 border border-blue-200 rounded-md px-[8px] py-[3px] text-[12px] font-medium"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 5,
+                        background: '#eff6ff',
+                        color: '#1d4ed8',
+                        border: '1px solid #bfdbfe',
+                        borderRadius: 6,
+                        padding: '3px 8px',
+                        fontSize: 12,
+                        fontWeight: 500,
+                      }}
                     >
                       {d}
                       <button
                         onClick={() => removeDomain(d)}
-                        className="bg-transparent border-0 cursor-pointer text-blue-500 p-0 flex items-center leading-none"
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          color: '#3b82f6',
+                          padding: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          lineHeight: 1,
+                        }}
                       >
                         <svg
                           width="9"
@@ -196,18 +302,29 @@ export function SettingsPanel({
                   ))}
                 </div>
               )}
-              <div className="flex gap-[6px]">
+              <div style={{ display: 'flex', gap: 6 }}>
                 <input
                   type="text"
                   value={domainInput}
                   placeholder="e.g. example.com"
                   onChange={(e) => setDomainInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && addDomain()}
-                  className={`${inputClass} flex-1`}
+                  style={{ ...inputS, flex: 1 }}
                 />
                 <button
                   onClick={addDomain}
-                  className="px-[12px] py-[7px] rounded-lg border border-slate-200 bg-slate-100 text-slate-600 text-[12px] font-medium cursor-pointer whitespace-nowrap"
+                  style={{
+                    padding: '7px 12px',
+                    borderRadius: 8,
+                    border: '1px solid #e2e8f0',
+                    background: '#f1f5f9',
+                    color: '#475569',
+                    fontSize: 12,
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, sans-serif',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   Add
                 </button>
@@ -215,11 +332,11 @@ export function SettingsPanel({
             </div>
           </div>
 
-          <div className="mb-[24px]">
-            <div className={groupTitleClass}>Alt Tags</div>
+          <div style={{ marginBottom: 24 }}>
+            <div style={groupTitleS}>Alt Tags</div>
             <div>
-              <label className={labelClass}>Min Alt Tag Length</label>
-              <div className="flex items-center gap-[10px]">
+              <label style={labelS}>Min Alt Tag Length</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <input
                   type="number"
                   min={1}
@@ -227,28 +344,69 @@ export function SettingsPanel({
                   onChange={(e) =>
                     updateNum('altTags', 'minLength', e.target.value)
                   }
-                  className={`${inputClass} w-[80px]`}
+                  style={{ ...inputS, width: 80 }}
                 />
-                <span className="text-[12px] text-slate-400">characters</span>
+                <span style={{ fontSize: 12, color: '#94a3b8' }}>
+                  characters
+                </span>
               </div>
-              <p className="text-[11px] text-slate-400 mt-[6px] leading-[1.5]">
+              <p
+                style={{
+                  fontSize: 11,
+                  color: '#94a3b8',
+                  marginTop: 6,
+                  lineHeight: 1.5,
+                }}
+              >
                 Alt tags shorter than this threshold will be marked as{' '}
-                <strong className="font-semibold">Weak</strong>
+                <strong style={{ fontWeight: 600 }}>Weak</strong>
               </p>
             </div>
           </div>
         </div>
 
-        <div className="p-[16px_22px] border-t border-slate-200 shrink-0">
+        <div
+          style={{
+            padding: '16px 22px',
+            borderTop: '1px solid #e2e8f0',
+            flexShrink: 0,
+          }}
+        >
           <button
             onClick={handleReset}
-            className="bg-transparent border-0 cursor-pointer text-[12px] text-slate-400 underline mb-[12px] block"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: 12,
+              color: '#94a3b8',
+              textDecoration: 'underline',
+              fontFamily: 'Inter, sans-serif',
+              marginBottom: 12,
+              display: 'block',
+            }}
           >
             Reset to defaults
           </button>
           <button
             onClick={handleApply}
-            className="w-full flex items-center justify-center gap-[6px] px-[16px] py-[10px] rounded-lg bg-slate-900 text-white text-[13px] font-semibold cursor-pointer border-0 transition-colors"
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              padding: '10px 16px',
+              borderRadius: 8,
+              background: '#0f172a',
+              color: '#ffffff',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif',
+              border: 'none',
+              transition: 'background 0.15s',
+            }}
           >
             Apply Rules
           </button>

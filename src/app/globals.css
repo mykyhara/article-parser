@@ -346,13 +346,3 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   opacity: 1;
 }
-
-/* Code block font stack */
-.font-code {
-  font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
-}
-
-/* SVG ring animation */
-.stroke-dash-transition {
-  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}

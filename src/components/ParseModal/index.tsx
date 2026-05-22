@@ -42,28 +42,65 @@ export function ParseModal({
 
   if (!open) return null
 
-  const inputClasses = [
-    'w-full p-[10px_12px] rounded-lg text-[13px] text-slate-950 outline-none',
-    'border-[1.5px] transition-[border-color,background] duration-150',
-    showError
-      ? 'border-red-200 bg-red-50'
-      : valid && touched
-        ? 'border-green-200 bg-slate-50'
-        : 'border-slate-200 bg-slate-50',
-  ].join(' ')
-
   return (
     <div
-      className="fixed inset-0 bg-[rgba(15,23,42,0.55)] backdrop-blur-[3px] z-[60] flex items-center justify-center p-[20px]"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(15,23,42,0.55)',
+        backdropFilter: 'blur(3px)',
+        zIndex: 60,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+      }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="fade-in bg-white rounded-2xl w-full max-w-[520px] shadow-[0_24px_64px_rgba(0,0,0,0.22)] overflow-hidden">
-        <div className="p-[20px_22px_18px] border-b border-slate-200 flex items-start justify-between">
+      <div
+        className="fade-in"
+        style={{
+          background: '#ffffff',
+          borderRadius: 16,
+          width: '100%',
+          maxWidth: 520,
+          boxShadow: '0 24px 64px rgba(0,0,0,0.22)',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            padding: '20px 22px 18px',
+            borderBottom: '1px solid #e2e8f0',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
+        >
           <div>
-            <div className="flex items-center gap-[9px] mb-1">
-              <div className="w-[30px] h-[30px] rounded-[7px] bg-blue-50 border border-blue-200 flex items-center justify-center shrink-0">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 9,
+                marginBottom: 4,
+              }}
+            >
+              <div
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 7,
+                  background: '#eff6ff',
+                  border: '1px solid #bfdbfe',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
                 <svg
                   width="14"
                   height="14"
@@ -81,17 +118,34 @@ export function ParseModal({
                   <polyline points="10 9 9 9 8 9" />
                 </svg>
               </div>
-              <span className="text-[15px] font-bold text-slate-900">
+              <span style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>
                 Parse Google Document
               </span>
             </div>
-            <p className="text-[12px] text-slate-400 m-0 pl-[39px]">
+            <p
+              style={{
+                fontSize: 12,
+                color: '#94a3b8',
+                margin: 0,
+                paddingLeft: 39,
+              }}
+            >
               Paste a Google Docs URL or bare document ID
             </p>
           </div>
           <button
             onClick={onClose}
-            className="bg-transparent border-0 cursor-pointer text-slate-400 p-[6px] rounded-md flex items-center shrink-0"
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#94a3b8',
+              padding: 6,
+              borderRadius: 6,
+              display: 'flex',
+              alignItems: 'center',
+              flexShrink: 0,
+            }}
           >
             <svg
               width="15"
@@ -109,8 +163,18 @@ export function ParseModal({
           </button>
         </div>
 
-        <div className="p-[20px_22px]">
-          <label className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.06em] block mb-[6px]">
+        <div style={{ padding: '20px 22px' }}>
+          <label
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              color: '#94a3b8',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              display: 'block',
+              marginBottom: 6,
+            }}
+          >
             Document URL
           </label>
           <input
@@ -123,20 +187,42 @@ export function ParseModal({
             }}
             onKeyDown={handleKeyDown}
             placeholder="https://docs.google.com/document/d/..."
-            className={inputClasses}
+            style={{
+              width: '100%',
+              padding: '10px 12px',
+              border: `1.5px solid ${showError ? '#fecaca' : valid && touched ? '#bbf7d0' : '#e2e8f0'}`,
+              borderRadius: 8,
+              fontSize: 13,
+              color: '#0f172a',
+              fontFamily: 'Inter, sans-serif',
+              outline: 'none',
+              background: showError ? '#fef2f2' : '#f8fafc',
+              transition: 'border-color 0.15s, background 0.15s',
+            }}
           />
 
           {showError && (
-            <p className="text-[11.5px] text-red-600 mt-[5px]">
+            <p style={{ fontSize: 11.5, color: '#dc2626', marginTop: 5 }}>
               Doesn&apos;t look like a valid Google Docs URL or document ID.
             </p>
           )}
 
-          <div className="mt-[12px] p-[10px_12px] bg-slate-50 border border-slate-200 rounded-lg flex items-start gap-[8px]">
+          <div
+            style={{
+              marginTop: 12,
+              padding: '10px 12px',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: 8,
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 8,
+            }}
+          >
             <svg
               width="13"
               height="13"
-              className="shrink-0 mt-px"
+              style={{ flexShrink: 0, marginTop: 1 }}
               viewBox="0 0 24 24"
               fill="none"
               stroke="#94a3b8"
@@ -148,17 +234,24 @@ export function ParseModal({
               <line x1="12" y1="8" x2="12" y2="12" />
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
-            <span className="text-[12px] text-slate-500 leading-[1.5]">
+            <span style={{ fontSize: 12, color: '#64748b', lineHeight: 1.5 }}>
               The document must be shared as{' '}
-              <strong className="text-slate-600">
+              <strong style={{ color: '#475569' }}>
                 &quot;Anyone with the link can view&quot;
               </strong>
               . No API key required.
             </span>
           </div>
 
-          <div className="mt-[10px] flex items-center gap-[7px]">
-            <span className="text-[11.5px] text-slate-400">
+          <div
+            style={{
+              marginTop: 10,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+            }}
+          >
+            <span style={{ fontSize: 11.5, color: '#94a3b8' }}>
               Try the example doc:
             </span>
             <button
@@ -166,28 +259,65 @@ export function ParseModal({
                 setUrl(EXAMPLE_URL)
                 setTouched(false)
               }}
-              className="bg-transparent border-0 p-0 text-[11.5px] text-blue-500 cursor-pointer underline"
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                fontSize: 11.5,
+                color: '#3b82f6',
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                textDecoration: 'underline',
+              }}
             >
               Best Leather Dog Collars
             </button>
           </div>
         </div>
 
-        <div className="p-[14px_22px] border-t border-slate-200 flex justify-end gap-[8px]">
+        <div
+          style={{
+            padding: '14px 22px',
+            borderTop: '1px solid #e2e8f0',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 8,
+          }}
+        >
           <button
             onClick={onClose}
-            className="px-[16px] py-[8px] rounded-lg bg-transparent text-slate-600 text-[13px] font-semibold cursor-pointer border border-slate-200"
+            style={{
+              padding: '8px 16px',
+              borderRadius: 8,
+              background: 'transparent',
+              color: '#475569',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif',
+              border: '1px solid #e2e8f0',
+            }}
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={!valid || isLoading}
-            className={`px-[20px] py-[8px] rounded-lg border-0 text-[13px] font-semibold flex items-center gap-[7px] transition-colors ${
-              valid && !isLoading
-                ? 'bg-slate-900 text-white cursor-pointer'
-                : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-            }`}
+            style={{
+              padding: '8px 20px',
+              borderRadius: 8,
+              background: valid && !isLoading ? '#0f172a' : '#e2e8f0',
+              color: valid && !isLoading ? '#ffffff' : '#94a3b8',
+              fontSize: 13,
+              fontWeight: 600,
+              cursor: valid && !isLoading ? 'pointer' : 'not-allowed',
+              fontFamily: 'Inter, sans-serif',
+              border: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 7,
+              transition: 'background 0.15s',
+            }}
           >
             {isLoading ? (
               <>
