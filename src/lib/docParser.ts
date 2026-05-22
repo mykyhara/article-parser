@@ -84,9 +84,7 @@ export async function parseGoogleDoc(docId: string): Promise<ParsedArticle> {
       if (parsed.hostname === 'www.google.com' && parsed.pathname === '/url') {
         return parsed.searchParams.get('q') ?? raw
       }
-    } catch {
-      /* keep original */
-    }
+    } catch {}
     return raw
   }
 
@@ -388,9 +386,7 @@ function buildInlineContent($: cheerio.CheerioAPI, el: AnyDomNode): string {
               ) {
                 href = parsed.searchParams.get('q') ?? href
               }
-            } catch {
-              /* keep original */
-            }
+            } catch {}
             const inner = buildInlineContent($, node)
             if (inner.trim() && href) {
               parts.push(`<a href="${escapeAttr(href)}">${inner}</a>`)

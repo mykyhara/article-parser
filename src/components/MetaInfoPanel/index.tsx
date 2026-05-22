@@ -31,25 +31,14 @@ const FIELDS: FieldConfig[] = [
 function CharBadge({ count, limit }: { count: number; limit: number }) {
   const over = count > limit
   const close = count > limit * 0.94
-  const style = over
-    ? { bg: '#fef2f2', color: '#991b1b', border: '#fecaca' }
+  const classes = over
+    ? 'bg-red-50 text-red-800 border-red-200'
     : close
-      ? { bg: '#fffbeb', color: '#92400e', border: '#fde68a' }
-      : { bg: '#f0fdf4', color: '#15803d', border: '#bbf7d0' }
+      ? 'bg-amber-50 text-amber-800 border-amber-200'
+      : 'bg-green-50 text-green-700 border-green-200'
   return (
     <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        padding: '2px 6px',
-        fontSize: 11,
-        fontWeight: 500,
-        borderRadius: 6,
-        background: style.bg,
-        color: style.color,
-        border: `1px solid ${style.border}`,
-        fontFamily: 'monospace',
-      }}
+      className={`inline-flex items-center px-[6px] py-[2px] text-[11px] font-medium rounded-md border font-mono ${classes}`}
     >
       {count}/{limit}
     </span>
@@ -72,26 +61,8 @@ export function MetaInfoPanel({
   }
 
   return (
-    <div
-      style={{
-        background: '#ffffff',
-        border: '1px solid #e2e8f0',
-        borderRadius: 12,
-        padding: '18px 18px 4px',
-        marginBottom: 10,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
-      }}
-    >
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 600,
-          color: '#94a3b8',
-          marginBottom: 16,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-        }}
-      >
+    <div className="bg-white border border-slate-200 rounded-xl p-[18px_18px_4px] mb-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+      <div className="text-[11px] font-semibold text-slate-400 mb-[16px] tracking-[0.06em] uppercase">
         Meta &amp; Article Info
       </div>
 
@@ -100,61 +71,32 @@ export function MetaInfoPanel({
         const isFocused = focused === key
         const isHovered = hovered === key
 
-        const borderColor = isFocused ? '#3b82f6' : '#e2e8f0'
-        const boxShadow = isFocused ? '0 0 0 3px rgba(59,130,246,0.1)' : 'none'
-
-        const inputStyle: React.CSSProperties = {
-          width: '100%',
-          fontFamily: 'Inter, sans-serif',
-          fontSize: 13,
-          color: '#0f172a',
-          border: `1px solid ${borderColor}`,
-          borderRadius: 8,
-          padding: '8px 12px',
-          background: '#ffffff',
-          outline: 'none',
-          resize: multi ? 'vertical' : 'none',
-          transition: 'border-color 0.15s, box-shadow 0.15s',
-          boxShadow,
-        }
+        const inputCls = [
+          'w-full text-[13px] text-slate-900 rounded-lg p-[8px_12px] bg-white outline-none',
+          'border transition-[border-color,box-shadow] duration-150',
+          multi ? 'resize-y' : 'resize-none',
+          isFocused
+            ? 'border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.1)]'
+            : 'border-slate-200',
+        ].join(' ')
 
         return (
           <div
             key={key}
-            style={{ marginBottom: 14 }}
+            className="mb-[14px]"
             onMouseEnter={() => setHovered(key)}
             onMouseLeave={() => setHovered(null)}
           >
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: 5,
-              }}
-            >
-              <label
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  color: '#94a3b8',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                }}
-              >
+            <div className="flex items-center justify-between mb-[5px]">
+              <label className="text-[11px] font-semibold text-slate-400 tracking-[0.06em] uppercase">
                 {label}
               </label>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div className="flex items-center gap-[6px]">
                 {limit !== null && (
                   <CharBadge count={value.length} limit={limit} />
                 )}
                 <span
-                  style={{
-                    color: '#94a3b8',
-                    display: 'flex',
-                    opacity: isHovered || isFocused ? 1 : 0,
-                    transition: 'opacity 0.15s',
-                  }}
+                  className={`text-slate-400 flex transition-opacity duration-150 ${isHovered || isFocused ? 'opacity-100' : 'opacity-0'}`}
                 >
                   <svg
                     width="12"
@@ -180,7 +122,7 @@ export function MetaInfoPanel({
                 onChange={(e) => onChange(key, e.target.value)}
                 onFocus={() => setFocused(key)}
                 onBlur={() => setFocused(null)}
-                style={inputStyle}
+                className={inputCls}
               />
             ) : (
               <input
@@ -189,7 +131,7 @@ export function MetaInfoPanel({
                 onChange={(e) => onChange(key, e.target.value)}
                 onFocus={() => setFocused(key)}
                 onBlur={() => setFocused(null)}
-                style={inputStyle}
+                className={inputCls}
               />
             )}
           </div>

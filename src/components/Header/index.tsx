@@ -33,36 +33,9 @@ export function Header({
     : null
 
   return (
-    <header
-      style={{
-        height: 54,
-        background: '#0f172a',
-        display: 'flex',
-        alignItems: 'center',
-        padding: '0 22px',
-        gap: 14,
-        position: 'sticky',
-        top: 0,
-        zIndex: 30,
-        borderBottom: '1px solid rgba(255,255,255,0.07)',
-        flexShrink: 0,
-      }}
-    >
-      <div
-        style={{ display: 'flex', alignItems: 'center', gap: 9, flexShrink: 0 }}
-      >
-        <div
-          style={{
-            width: 28,
-            height: 28,
-            borderRadius: 7,
-            background: '#22c55e',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 1px 6px rgba(34,197,94,0.45)',
-          }}
-        >
+    <header className="h-[54px] bg-slate-900 flex items-center px-[22px] gap-[14px] sticky top-0 z-30 border-b border-white/[0.07] shrink-0">
+      <div className="flex items-center gap-[9px] shrink-0">
+        <div className="w-[28px] h-[28px] rounded-[7px] bg-green-500 flex items-center justify-center shadow-[0_1px_6px_rgba(34,197,94,0.45)]">
           <svg
             width="13"
             height="13"
@@ -76,49 +49,19 @@ export function Header({
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
-        <span
-          style={{
-            fontSize: 15,
-            fontWeight: 700,
-            color: '#f8fafc',
-            letterSpacing: '-0.01em',
-          }}
-        >
+        <span className="text-[15px] font-bold text-slate-50 tracking-[-0.01em]">
           ArticleQA
         </span>
       </div>
 
-      <div
-        style={{
-          width: 1,
-          height: 22,
-          background: 'rgba(255,255,255,0.1)',
-          flexShrink: 0,
-        }}
-      />
+      <div className="w-px h-[22px] bg-white/10 shrink-0" />
 
       {docUrl && hasArticle && (
         <a
           href={docUrl}
           target="_blank"
           rel="noopener noreferrer"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 5,
-            padding: '5px 10px',
-            borderRadius: 7,
-            background: 'rgba(255,255,255,0.07)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: '#cbd5e1',
-            fontSize: 12,
-            fontWeight: 500,
-            cursor: 'pointer',
-            textDecoration: 'none',
-            flexShrink: 0,
-            transition: 'background 0.15s',
-            whiteSpace: 'nowrap',
-          }}
+          className="flex items-center gap-[5px] px-[10px] py-[5px] rounded-[7px] bg-white/[0.07] border border-white/10 text-slate-300 text-[12px] font-medium cursor-pointer no-underline shrink-0 transition-colors whitespace-nowrap"
         >
           <svg
             width="12"
@@ -151,17 +94,7 @@ export function Header({
         </a>
       )}
 
-      <span
-        style={{
-          fontSize: 12,
-          color: 'rgba(148,163,184,0.75)',
-          flex: 1,
-          minWidth: 0,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-        }}
-      >
+      <span className="text-[12px] text-slate-400/75 flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
         {isLoading
           ? '⟳ Parsing…'
           : parsedAt
@@ -169,24 +102,10 @@ export function Header({
             : 'No document loaded — click "Parse Document" to start'}
       </span>
 
-      <div
-        style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}
-      >
+      <div className="flex items-center gap-[8px] shrink-0">
         <button
           onClick={onOpenSettings}
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(255,255,255,0.07)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: '#94a3b8',
-            cursor: 'pointer',
-            transition: 'all 0.15s',
-          }}
+          className="w-[32px] h-[32px] rounded-lg flex items-center justify-center bg-white/[0.07] border border-white/10 text-slate-400 cursor-pointer transition-all"
           aria-label="Open settings"
         >
           <svg
@@ -208,22 +127,7 @@ export function Header({
           <button
             onClick={onReParse}
             disabled={isLoading}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '6px 12px',
-              borderRadius: 8,
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: '#e2e8f0',
-              fontSize: 12,
-              fontWeight: 500,
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontFamily: 'Inter, sans-serif',
-              transition: 'all 0.15s',
-              opacity: isLoading ? 0.6 : 1,
-            }}
+            className={`flex items-center gap-[6px] px-[12px] py-[6px] rounded-lg bg-white/[0.07] border border-white/[0.12] text-slate-200 text-[12px] font-medium transition-all ${isLoading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
           >
             <svg
               width="13"
@@ -248,23 +152,7 @@ export function Header({
         <button
           onClick={onOpenParse}
           disabled={isLoading}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '6px 14px',
-            borderRadius: 8,
-            background: '#22c55e',
-            border: 'none',
-            color: '#ffffff',
-            fontSize: 12,
-            fontWeight: 600,
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            fontFamily: 'Inter, sans-serif',
-            transition: 'all 0.15s',
-            opacity: isLoading ? 0.7 : 1,
-            boxShadow: '0 1px 6px rgba(34,197,94,0.35)',
-          }}
+          className={`flex items-center gap-[6px] px-[14px] py-[6px] rounded-lg bg-green-500 border-0 text-white text-[12px] font-semibold transition-all shadow-[0_1px_6px_rgba(34,197,94,0.35)] ${isLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
         >
           <svg
             width="13"
