@@ -1,3 +1,10 @@
+# Short Intro
+Hi Jules,
+Thanks for the challenge — really enjoyed it! I've put my solution together here:
+https://brief-capacity-b5e.notion.site/Mykyta-Harashchenko-Developer-Challenge-367bdef5963f802ca3eae8fca04c2d3d
+
+---
+
 # ArticleQA
 
 An SEO article quality checker and WordPress publisher tool for writing teams. Paste a Google Docs URL, get instant quality scores, preview the clean article HTML, and send it to WordPress — all in one flow.
