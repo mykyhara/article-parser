@@ -1,6 +1,6 @@
 # Short Intro
 Hi Jules,
-Thanks for the challenge — really enjoyed it! I've put my solution together here:
+Thanks for the challenge — really enjoyed it! I've put my full solution together in a Notion doc here:
 https://brief-capacity-b5e.notion.site/Mykyta-Harashchenko-Developer-Challenge-367bdef5963f802ca3eae8fca04c2d3d
 
 ---
